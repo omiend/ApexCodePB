@@ -36,33 +36,9 @@ lazy val compilerPlugin = project
   .in(file("compiler-plugin"))
   .settings(
     crossScalaVersions := Seq(Scala212, Scala213),
-    Compile / sourceGenerators += Def.task {
-      val file = (Compile / sourceManaged).value / "apexcodepb" / "compiler" / "Version.scala"
-      IO.write(
-        file,
-        s"""package apexcodepb.compiler
-           |object Version {
-           |  val apexcodepbVersion = "${version.value}"
-           |  val protobufVersion = "${protobufVersion}"
-           |}""".stripMargin
-      )
-      Seq(file)
-    }.taskValue,
     apexcodepbProtoPackageReplaceTask := {
-      /*
-       SBT 1.x depends on apexcodepb-runtime which contains a compiled copy of
-       apexcodepb.proto.  When the compiler plugin is loaded into SBT it may cause a
-       conflict. To prevent that, we use a different package name for the generated
-       code for the compiler-plugin.  In the past, we used shading for this
-       purpose, but this makes it harder to create more protoc plugins that depend
-       on compiler-plugin.
-       */
-      streams.value.log
-        .info(s"Generating apexcodepb.proto with package replaced to apexcodepb.options.compiler.")
-      val src  = baseDirectory.value / ".." / "protobuf" / "apexcodepb" / "common.proto"
       val dest = (Compile / resourceManaged).value / "protobuf" / "apexcodepb" / "common.proto"
-      val s    = IO.read(src).replace("package apexcodepb", "package apexcodepb.internal")
-      IO.write(dest, s"// DO NOT EDIT. Copy of $src\n\n" + s)
+      IO.write(dest, IO.read(baseDirectory.value / ".." / "protobuf" / "apexcodepb" / "common.proto"))
       Seq(dest)
     },
     Compile / PB.generate := {
