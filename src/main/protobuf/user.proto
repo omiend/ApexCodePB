@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package apexcodepb;
+
+import "address.proto";
+
+message User {
+    string id         = 1;
+    string first_name = 2; // 名
+    string last_name  = 3; // 氏
+    int32  age        = 4; // 年齢
+    bool status       = 5; // 有効
+    Address address   = 6; // Address
+}

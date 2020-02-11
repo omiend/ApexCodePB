@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package apexcodepb;
+
+message Address {
+    int32  id            = 1;
+    string user_id       = 2;
+    string zip_code      = 3; // 郵便番号
+    string country       = 4; // 国
+    string prefecture    = 5; // 都道府県
+    string city          = 6; // 市区郡
+    string address_line1 = 7; // 町名・番地1
+    string address_line2 = 8; // 町名・番地2
+}
