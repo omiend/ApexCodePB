@@ -42,7 +42,7 @@ sbt
 
 ### assembry
 
-assembry コマンドでコンパイルします。
+[sbt-assembry](https://github.com/sbt/sbt-assembly) でコンパイルします。
 
 ```
 assembry
